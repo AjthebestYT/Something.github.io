@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Game List</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    #games { margin-top: 1em; }
+    .game-item { display: flex; align-items: center; margin: 0.5em 0; }
+    .game-item span { flex: 1; }
+    button { margin-left: 1em; }
+  </style>
+</head>
+<body>
+  <h1>Game List</h1>
+  <form id="addGameForm">
+    <input type="text" id="gameInput" placeholder="Enter game name" required>
+    <button type="submit">Add Game</button>
+  </form>
+  <div id="games"></div>
+
+  <script>
+    const games = [];
+    const gamesDiv = document.getElementById('games');
+    const addGameForm = document.getElementById('addGameForm');
+    const gameInput = document.getElementById('gameInput');
+
+    function renderGames() {
+      gamesDiv.innerHTML = '';
+      games.forEach((game, idx) => {
+        const div = document.createElement('div');
+        div.className = 'game-item';
+        const span = document.createElement('span');
+        span.textContent = game;
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = 'Remove';
+        removeBtn.onclick = () => {
+          games.splice(idx, 1);
+          renderGames();
+        };
+        div.appendChild(span);
+        div.appendChild(removeBtn);
+        gamesDiv.appendChild(div);
+      });
+    }
+
+    addGameForm.onsubmit = (e) => {
+      e.preventDefault();
+      const gameName = gameInput.value.trim();
+      if (gameName) {
+        games.push(gameName);
+        gameInput.value = '';
+        renderGames();
+      }
+    };
+  </script>
+</body>
+</html>
